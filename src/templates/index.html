@@ -1,0 +1,31 @@
+<!doctype HTML>
+
+<html>
+
+<head>
+
+	<title>Do &middot; whatever</title>
+	<link href="/static/dist/dowhatever.css" rel="stylesheet">
+</head>
+
+<body>
+
+	<div id="app"></div>
+
+</body>
+
+<script type="text/javascript" src="/static/node_modules/react/dist/react.min.js"></script>
+<script type="text/javascript" src="/static/node_modules/react-dom/dist/react-dom.min.js"></script>
+
+<script src="/static/dist/dowhatever.js"></script>
+
+<script>
+	dowhatever.runProgram(
+		{type : 'do-whatever'},
+		{},
+		{},
+		'app'
+	);
+</script>
+
+</html>

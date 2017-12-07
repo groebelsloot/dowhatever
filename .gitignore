@@ -1,0 +1,7 @@
+__pycache__
+.DS_Store
+*.pyc
+settings.py
+venv
+node_modules
+dist
