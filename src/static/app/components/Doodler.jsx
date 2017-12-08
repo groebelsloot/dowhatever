@@ -2,6 +2,7 @@ export default class Doodler extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
+		this.down = false;
 	}
 
 	componentDidMount() {
@@ -23,13 +24,37 @@ export default class Doodler extends React.PureComponent {
 		}
 	}
 
+	mouseDown() {
+		this.down = true;
+	}
+
+	mouseUp() {
+		this.down = false;
+	}
+
 	//TODO mouse pos
 	draw(e) {
-		const c = document.getElementById("doodler_canvas");
-		var ctx = c.getContext("2d");
-        ctx.clearRect (0, 0, c.width, c.height);
-        ctx.fillStyle = "#FF0000";
-        ctx.fillRect(0,0, 200, 100);//time progressing
+		if(this.down) {
+			const c = document.getElementById("doodler_canvas");
+			var pos = this.getMousePos(c, e);
+			var ctx = c.getContext("2d");
+	        //ctx.clearRect (0, 0, c.width, c.height);
+
+	        //ctx.fillRect(pos.x, pos.y, 2, 2);//time progressing
+
+	        ctx.beginPath();
+	        ctx.fillStyle = "#FF0000";
+			ctx.arc(pos.x,pos.y,2,0,2*Math.PI);
+			ctx.fill();
+	    }
+	}
+
+	getMousePos(canvas, evt) {
+	    const rect = canvas.getBoundingClientRect();
+	    return {
+	      x: evt.clientX - rect.left,
+	      y: evt.clientY - rect.top
+	    };
 	}
 
 	render() {
@@ -39,7 +64,9 @@ export default class Doodler extends React.PureComponent {
 					id="doodler_canvas"
 					width="1024"
 					height="1024"
-					onMouseDown={this.draw.bind(this)}
+					onMouseDown={this.mouseDown.bind(this)}
+					onMouseUp={this.mouseUp.bind(this)}
+					onMouseMove={this.draw.bind(this)}
 				>
 				</canvas>
 			</div>
