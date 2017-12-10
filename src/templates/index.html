@@ -20,12 +20,18 @@
 <script src="/static/dist/dowhatever.js"></script>
 
 <script>
-	dowhatever.runProgram(
-		{type : 'do-whatever'},
-		{},
-		{},
-		'app'
-	);
+	document.addEventListener('DOMContentLoaded',domloaded,false);
+
+	function domloaded() {
+		dowhatever.runProgram(
+			{type : 'do-whatever'},
+			{},
+			{},
+			'app'
+		);
+	}
+
+
 </script>
 
 </html>

@@ -1,13 +1,29 @@
+import DrawUtil from '../util/DrawUtil';
+
+/*
+READ: https://stackoverflow.com/questions/5329661/is-there-any-way-to-accelerate-the-mousemove-event
+*/
+
 export default class Doodler extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
 		this.down = false;
+		this.prevPoint = null;
 	}
 
 	componentDidMount() {
 	    window.addEventListener('resize', this.updateCanvasDimensions.bind(this));
 	    this.updateCanvasDimensions();
+	    /*
+	    var f = DrawUtil.createInterpolant([0, 1, 2, 3, 4], [0, 1, 4, 9, 16]);
+		var message = '';
+		for (var x = 0; x <= 4; x += 0.5) {
+			var xSquared = f(x);
+			message += x + ' squared is about ' + xSquared + '\n';
+		}
+		alert(message);
+		*/
 	}
 
 	componentWillUnmount() {
@@ -42,10 +58,37 @@ export default class Doodler extends React.PureComponent {
 
 	        //ctx.fillRect(pos.x, pos.y, 2, 2);//time progressing
 
-	        ctx.beginPath();
-	        ctx.fillStyle = "#FF0000";
-			ctx.arc(pos.x,pos.y,2,0,2*Math.PI);
-			ctx.fill();
+	        //ctx.beginPath();
+	        //ctx.fillStyle = "#FF0000";
+			//ctx.arc(pos.x,pos.y,2,0,2*Math.PI);
+			//ctx.fill();
+
+
+			if(this.prevPoint == null) {
+				console.debug('null again')
+				this.prevPoint = {x : pos.x, y : pos.y }
+			} else {
+				var f = DrawUtil.createInterpolant([this.prevPoint.x, pos.x], [this.prevPoint.y, pos.y]);
+				//console.debug(this.prevPoint.x, f(this.prevPoint.x), pos.x, f(pos.x));
+				ctx.beginPath();
+				ctx.fillStyle = "#FF0000";
+				ctx.moveTo(this.prevPoint.x, f(this.prevPoint.x));
+				ctx.lineTo(pos.x, f(pos.x));
+				ctx.stroke();
+				this.prevPoint = null;
+			}
+
+
+			// ctx.beginPath();
+			// ctx.fillStyle = "#FF0000";
+			// ctx.moveTo(10, 10);
+			// ctx.lineTo(300,300);
+			// ctx.lineWidth = 15;
+			// ctx.stroke();
+			// ctx.closePath();
+
+
+
 	    }
 	}
 
